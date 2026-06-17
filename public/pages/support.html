@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Техподдержка - SwiftHire</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/tailwind.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#574082',
+                        bgGray: '#d9d9d9'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-bgGray min-h-screen">
+    <!-- Header (такой же как на главной) -->
+    <header class="bg-white shadow-md">
+        <nav class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center text-white font-bold text-xl">
+                        SH
+                    </div>
+                    <span class="text-2xl font-bold text-primary">SwiftHire</span>
+                </div>
+                
+                <div class="hidden md:flex space-x-6 nav-desktop">
+                    <a href="/pages/index.html" class="nav-link">Главная</a>
+                    <a href="/pages/search-service.html" class="nav-link">Поиск услуг</a>
+                    <a href="/pages/search-orders.html" class="nav-link">Поиск заказов</a>
+                    <a href="/pages/dashboard.html" id="dashboardLink" class="nav-link">Кабинет</a>
+                    <a href="/pages/profile.html" id="profileLink" class="nav-link">Профиль</a>
+                    <a href="/pages/chat.html" id="chatLink" class="nav-link">Чат</a>
+                    <a href="/pages/support.html" id="supportLink" class="nav-link active">Поддержка</a>
+                </div>
+                
+                <div class="hidden md:flex space-x-4">
+                    <button id="logoutBtn" class="btn-primary">Выйти</button>
+                </div>
+                
+                <button id="mobileMenuBtn" class="md:hidden p-2">
+                    <div class="hamburger">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+        <div class="max-w-6xl mx-auto">
+            <h1 class="text-3xl font-bold text-primary mb-8">Техническая поддержка</h1>
+            
+            <!-- Tabs -->
+            <div class="flex border-b border-gray-200 mb-6">
+                <button class="tab-btn active px-6 py-3 text-primary font-semibold border-b-2 border-primary" data-tab="new">
+                    Новая заявка
+                </button>
+                <button class="tab-btn px-6 py-3 text-gray-600 hover:text-primary" data-tab="my">
+                    Мои заявки
+                </button>
+            </div>
+            
+            <!-- Новая заявка -->
+            <div id="newTicketTab" class="tab-content">
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h2 class="text-xl font-bold text-primary mb-4">Создать заявку в поддержку</h2>
+                    <form id="createTicketForm">
+                        <div class="mb-4">
+                            <label class="block text-gray-700 mb-2">Тема заявки *</label>
+                            <input type="text" id="subject" required
+                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-primary">
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label class="block text-gray-700 mb-2">Приоритет</label>
+                            <select id="priority" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-primary">
+                                <option value="low">Низкий</option>
+                                <option value="medium" selected>Средний</option>
+                                <option value="high">Высокий</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label class="block text-gray-700 mb-2">Описание проблемы *</label>
+                            <textarea id="description" rows="6" required
+                                      class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-primary"
+                                      placeholder="Опишите подробно вашу проблему..."></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn-primary px-6 py-2">
+                            Отправить заявку
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Мои заявки -->
+            <div id="myTicketsTab" class="tab-content hidden">
+                <div id="ticketsList" class="space-y-4">
+                    <div class="text-center text-gray-500 py-8">
+                        Загрузка заявок...
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Модальное окно для просмотра ответа -->
+    <div id="responseModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+        <div class="bg-white rounded-lg max-w-2xl w-full mx-4">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-bold text-primary">Ответ техподдержки</h3>
+                    <button onclick="closeModal()" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+                </div>
+                <div id="modalContent" class="prose max-w-none"></div>
+                <div class="mt-6 text-right">
+                    <button onclick="closeModal()" class="px-4 py-2 bg-gray-300 rounded-lg hover:bg-gray-400">
+                        Закрыть
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-white mt-16 py-8 border-t">
+        <div class="container mx-auto px-4 text-center text-gray-600 text-sm">
+            © 2025 SwiftHire. Учебный проект.
+        </div>
+    </footer>
+
+    <script src="/js/main.js"></script>
+    <script src="/js/mobile-menu.js"></script>
+    <script src="/js/support.js"></script>
+</body>
+</html>

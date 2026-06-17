@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Профиль - SwiftHire</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/tailwind.css">
+    <link rel="stylesheet" href="/css/skills.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#574082',
+                        bgGray: '#d9d9d9'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-bgGray min-h-screen">
+    <!-- Header -->
+    <header class="bg-white shadow-md">
+        <nav class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center text-white font-bold text-xl">
+                        SH
+                    </div>
+                    <span class="text-2xl font-bold text-primary">SwiftHire</span>
+                </div>
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex space-x-6 nav-desktop">
+                    <a href="/pages/index.html" class="nav-link">Главная</a>
+                    <a href="/pages/search-service.html" class="nav-link">Поиск услуг</a>
+                    <a href="/pages/search-orders.html" class="nav-link">Поиск заказов</a>
+                    <a href="/pages/dashboard.html" id="dashboardLink" class="nav-link">Кабинет</a>
+                    <a href="/pages/profile.html" id="profileLink" class="nav-link active">Профиль</a>
+                    <a href="/pages/chat.html" id="chatLink" class="nav-link">Чат</a>
+                    <a href="/pages/freelance-course.html" class="nav-link">Обучение</a>
+                </div>
+                
+                <!-- Desktop Buttons -->
+                <div class="hidden md:flex space-x-4">
+                    <button id="logoutBtn" class="btn-primary">Выйти</button>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <button id="mobileMenuBtn" class="md:hidden p-2">
+                    <div class="hamburger">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 md:hidden">
+        <div class="fixed right-0 top-0 bottom-0 w-64 bg-white shadow-xl mobile-menu-enter">
+            <div class="p-4">
+                <button id="closeMobileMenu" class="float-right text-gray-600 text-3xl">&times;</button>
+                <div class="clear-both pt-8 space-y-4">
+                    <a href="/pages/index.html" class="block py-3 px-4 text-gray-700 hover:bg-gray-100 rounded">
+                        Главная
+                    </a>
+                    <a href="/pages/search-service.html" class="block py-3 px-4 text-gray-700 hover:bg-gray-100 rounded">
+                        Поиск услуг
+                    </a>
+                    <a href="/pages/search-orders.html" class="block py-3 px-4 text-gray-700 hover:bg-gray-100 rounded">
+                        Поиск заказов
+                    </a>
+                    <a href="/pages/dashboard.html" id="dashboardLinkMobile" class="block py-3 px-4 text-gray-700 hover:bg-gray-100 rounded">
+                        Кабинет
+                    </a>
+                    <a href="/pages/profile.html" id="profileLinkMobile" class="block py-3 px-4 text-primary font-medium hover:bg-gray-100 rounded">
+                        Профиль
+                    </a>
+                    <a href="/pages/chat.html" id="chatLinkMobile" class="block py-3 px-4 text-gray-700 hover:bg-gray-100 rounded">
+                        Чат
+                    </a>
+                    <div class="border-t pt-4 mt-4 space-y-2">
+                        <button id="logoutBtnMobile" class="btn-primary w-full">Выйти</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <div class="mb-8">
+            <h1 class="text-4xl font-bold text-primary mb-2">Профиль пользователя</h1>
+            <p class="text-gray-600">Информация о пользователе <span id="userName">Пользователь</span></p>
+        </div>
+
+        <!-- Информация о пользователе -->
+        <div class="grid md:grid-cols-3 gap-6 mb-8">
+            <div class="card text-center">
+                <div class="text-3xl font-bold text-primary mb-2" id="portfolioCount">0</div>
+                <div class="text-gray-600">Работ в портфолио</div>
+            </div>
+            <div class="card text-center">
+                <div class="text-3xl font-bold text-primary mb-2">
+                    <span id="userRating">—</span>
+                </div>
+                <div class="text-gray-600">Рейтинг</div>
+                <div class="text-xs text-gray-500 mt-1" id="totalReviews">(нет отзывов)</div>
+            </div>
+            <div class="card text-center">
+                <div class="text-3xl font-bold text-primary mb-2" id="memberSince">2025</div>
+                <div class="text-gray-600">На платформе</div>
+            </div>
+        </div>
+
+        <div id="adminPanel" class="bg-gradient-to-r from-purple-50 to-indigo-50 rounded-lg shadow-md p-6 mb-6 hidden">
+                <h2 class="text-xl font-bold text-primary mb-4">👑 Административная панель</h2>
+                <p class="text-gray-600 mb-4">Управление системой SwiftHire</p>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <a href="/pages/admin/support.html" 
+                       class="block p-4 bg-white rounded-lg border-2 border-primary hover:shadow-lg transition">
+                        <div class="text-2xl mb-2">🎫</div>
+                        <div class="font-bold text-primary">Заявки в поддержку</div>
+                        <div class="text-sm text-gray-600">Управление заявками пользователей</div>
+                    </a>
+                    <!-- Здесь можно добавить другие админ-ссылки -->
+                </div>
+            </div>
+
+        <!-- Информация профиля -->
+        <div class="card mb-8">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-primary">Информация</h3>
+                <button id="editSkillsBtn" class="btn-primary text-sm hidden">Редактировать навыки</button>
+            </div>
+            <div class="grid md:grid-cols-2 gap-4">
+                <div>
+                    <p class="mb-2"><span class="font-medium">Имя:</span> <span id="userFullName">Пользователь</span></p>
+                    <p class="mb-2"><span class="font-medium">Email:</span> <span id="userEmail">user@example.com</span></p>
+                </div>
+                <div>
+                    <p class="mb-2"><span class="font-medium">Тип:</span> <span id="userType">Не указан</span></p>
+                    <p class="mb-2"><span class="font-medium">Дата регистрации:</span> <span id="regDate">01.01.2025</span></p>
+                </div>
+            </div>
+            <div class="mt-4 pt-4 border-t">
+                <p class="mb-2"><span class="font-medium">Навыки:</span></p>
+                <p id="userSkills" class="text-gray-600">Не указаны</p>
+            </div>
+        </div>
+
+        <!-- Портфолио -->
+        <div class="card mb-8">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-primary">Портфолио</h3>
+                <button id="addPortfolioBtn" class="btn-primary">Добавить работу</button>
+            </div>
+            <div id="portfolioContainer" class="grid md:grid-cols-3 gap-6">
+                <p class="text-gray-500 text-center py-8 col-span-3">Загрузка...</p>
+            </div>
+        </div>
+
+        <!-- Отзывы -->
+        <div class="card mb-8">
+            <h3 class="text-xl font-bold text-primary mb-4">Отзывы</h3>
+            <div id="reviewsContainer" class="space-y-4">
+                <p class="text-gray-500 text-center py-8">Загрузка...</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Модальное окно добавления/редактирования работы -->
+    <div id="portfolioModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+        <div class="bg-white rounded-lg p-8 max-w-md w-full mx-4">
+            <h2 class="text-2xl font-bold text-primary mb-4" id="modalTitle">Добавить работу</h2>
+            <form id="portfolioForm" class="space-y-4">
+                <input type="hidden" id="portfolioId" value="">
+                
+                <div>
+                    <label class="block text-gray-700 mb-2">Название работы *</label>
+                    <input type="text" id="portfolioTitle" required
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                </div>
+
+                <div>
+                    <label class="block text-gray-700 mb-2">Описание</label>
+                    <textarea id="portfolioDescription" rows="4"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"></textarea>
+                </div>
+
+                <div>
+                    <label for="portfolioImage" class="block text-gray-700 mb-2">Изображение *</label>
+                    <input type="file" id="portfolioImage" accept=".png,.jpg,.jpeg,.webp"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                    <p class="text-sm text-gray-500 mt-1">Загрузите изображение (PNG, JPG, JPEG, WEBP, макс. 2 МБ)</p>
+                </div>
+
+                <div id="imagePreview" class="hidden">
+                    <img id="previewImg" src="" alt="Preview" class="w-full h-48 object-cover rounded-lg">
+                </div>
+
+                <div class="flex space-x-3 pt-4">
+                    <button type="submit" class="btn-primary flex-1">Сохранить</button>
+                    <button type="button" id="cancelBtn" class="border-2 border-gray-300 px-4 py-2 rounded-lg hover:bg-gray-100 transition flex-1">
+                        Отмена
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Модальное окно просмотра работы -->
+    <div id="viewModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+        <div class="bg-white rounded-lg p-8 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-start mb-4">
+                <h2 class="text-2xl font-bold text-primary" id="viewTitle">Название работы</h2>
+                <button id="closeViewBtn" class="text-gray-500 hover:text-gray-700 text-3xl leading-none">&times;</button>
+            </div>
+            <img id="viewImage" src="" alt="" class="w-full h-auto rounded-lg mb-4">
+            <p id="viewDescription" class="text-gray-700 mb-4"></p>
+            <div class="flex space-x-3" id="viewActions">
+                <button id="editFromViewBtn" class="btn-primary flex-1">Редактировать</button>
+                <button id="deleteFromViewBtn" class="border-2 border-red-500 text-red-500 px-4 py-2 rounded-lg hover:bg-red-500 hover:text-white transition flex-1">
+                    Удалить
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно редактирования навыков -->
+    <div id="skillsModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+        <div class="bg-white rounded-lg p-8 max-w-md w-full mx-4">
+            <h2 class="text-2xl font-bold text-primary mb-4">Редактировать навыки</h2>
+            <form id="skillsForm" class="space-y-4">
+                <div>
+                    <label class="block text-gray-700 mb-2">Навыки</label>
+                    <textarea id="skillsInput" rows="6"
+                        placeholder="Укажите ваши навыки через запятую, например: JavaScript, Python, UI/UX Design"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"></textarea>
+                    <p class="text-sm text-gray-500 mt-1">Перечислите свои профессиональные навыки</p>
+                </div>
+
+                <div class="flex space-x-3 pt-4">
+                    <button type="submit" class="btn-primary flex-1">Сохранить</button>
+                    <button type="button" id="cancelSkillsBtn" class="border-2 border-gray-300 px-4 py-2 rounded-lg hover:bg-gray-100 transition flex-1">
+                        Отмена
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white mt-16 py-8 border-t">
+        <div class="container mx-auto px-4 text-center text-gray-600 text-sm">
+            © 2025 SwiftHire. Учебный проект.
+        </div>
+    </footer>
+
+    <script src="/js/main.js"></script>
+    <script src="/js/auth.js"></script>
+    <script src="/js/profile.js"></script>
+    <script src="/js/mobile-menu.js"></script>
+    <script src="/js/skillsManager.js"></script>
+</body>
+</html>
+

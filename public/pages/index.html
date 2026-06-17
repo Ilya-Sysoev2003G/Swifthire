@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SwiftHire - Главная</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/tailwind.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#574082',
+                        bgGray: '#d9d9d9'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-bgGray min-h-screen">
+    <!-- Header -->
+    <header class="bg-white shadow-md">
+        <nav class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center text-white font-bold text-xl">
+                        SH
+                    </div>
+                    <span class="text-2xl font-bold text-primary">SwiftHire</span>
+                </div>
+                
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex space-x-6 nav-desktop">
+                    <a href="/pages/index.html" class="nav-link active">Главная</a>
+                    <a href="/pages/search-service.html" class="nav-link">Поиск услуг</a>
+                    <a href="/pages/search-orders.html" class="nav-link">Поиск заказов</a>
+                    <a href="/pages/dashboard.html" id="dashboardLink" class="nav-link">Кабинет</a>
+                    <a href="/pages/profile.html" id="profileLink" class="nav-link">Профиль</a>
+                    <a href="/pages/chat.html" id="chatLink" class="nav-link">Чат</a>
+                </div>
+                
+                <!-- Desktop Buttons -->
+                <div class="hidden md:flex space-x-4">
+                    <button id="loginBtn" class="btn-primary">Войти</button>
+                    <button id="registerBtn" class="text-primary border-2 border-primary px-4 py-2 rounded-lg hover:bg-primary hover:text-white transition">
+                        Регистрация
+                    </button>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <button id="mobileMenuBtn" class="md:hidden p-2">
+                    <div class="hamburger">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 md:hidden">
+        <div class="fixed right-0 top-0 bottom-0 w-64 bg-white shadow-xl mobile-menu-enter">
+            <div class="p-4">
+                <button id="closeMobileMenu" class="float-right text-gray-600 text-3xl">&times;</button>
+                <div class="clear-both pt-8 space-y-4">
+                    <a href="/pages/index.html" class="block py-3 px-4 text-primary font-medium hover:bg-gray-100 rounded">
+                        Главная
+                    </a>
+                    <a href="/pages/search-service.html" class="block py-3 px-4 text-gray-700 hover:bg-gray-100 rounded">
+                        Поиск услуг
+                    </a>
+                    <a href="/pages/search-orders.html" class="block py-3 px-4 text-gray-700 hover:bg-gray-100 rounded">
+                        Поиск заказов
+                    </a>
+                    <a href="/pages/dashboard.html" id="dashboardLinkMobile" class="block py-3 px-4 text-gray-700 hover:bg-gray-100 rounded">
+                        Кабинет
+                    </a>
+                    <a href="/pages/profile.html" id="profileLinkMobile" class="block py-3 px-4 text-gray-700 hover:bg-gray-100 rounded">
+                        Профиль
+                    </a>
+                    <a href="/pages/chat.html" id="chatLinkMobile" class="block py-3 px-4 text-gray-700 hover:bg-gray-100 rounded">
+                        Чат
+                    </a>
+                    <div class="border-t pt-4 mt-4 space-y-2">
+                        <button id="loginBtnMobile" class="btn-primary w-full">Войти</button>
+                        <button id="registerBtnMobile" class="w-full text-primary border-2 border-primary px-4 py-2 rounded-lg hover:bg-primary hover:text-white transition">
+                            Регистрация
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-bg">
+        <main class="container mx-auto px-4 py-12">
+            <!-- Hero Section -->
+            <section class="text-center mb-16">
+                <h1 class="text-5xl font-bold text-primary mb-6">
+                    Найди исполнителя или заказчика быстро
+                </h1>
+                <p class="text-xl text-gray-600 mb-8">
+                    SwiftHire - платформа для поиска фрилансеров и заказов
+                </p>
+                <div class="flex justify-center space-x-4">
+                    <a href="/pages/search-service.html" class="btn-primary text-lg px-8 py-3">
+                        Найти услугу
+                    </a>
+                    <a href="/pages/search-orders.html" class="text-primary border-2 border-primary px-8 py-3 rounded-lg hover:bg-primary hover:text-white transition text-lg">
+                        Найти заказ
+                    </a>
+                </div>
+            </section>
+
+            <!-- Features Section -->
+            <section class="grid md:grid-cols-3 gap-8 mb-16">
+                <div class="card text-center">
+                    <div class="text-4xl mb-4">🎯</div>
+                    <h3 class="text-xl font-bold text-primary mb-2">Для заказчиков</h3>
+                    <p class="text-gray-600">Найдите квалифицированных исполнителей для своих задач</p>
+                </div>
+                <div class="card text-center">
+                    <div class="text-4xl mb-4">💼</div>
+                    <h3 class="text-xl font-bold text-primary mb-2">Для исполнителей</h3>
+                    <p class="text-gray-600">Получайте заказы и зарабатывайте на своих навыках</p>
+                </div>
+                <div class="card text-center">
+                    <div class="text-4xl mb-4">💬</div>
+                    <h3 class="text-xl font-bold text-primary mb-2">Удобный чат</h3>
+                    <p class="text-gray-600">Общайтесь напрямую с заказчиками и исполнителями</p>
+                </div>
+            </section>
+        </main>
+    </div>
+    <!-- Footer -->
+    <footer class="bg-white pt-16 py-8 border-t">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <h4 class="font-bold text-primary mb-4">SwiftHire</h4>
+                    <p class="text-gray-600 text-sm">Платформа для поиска заказчиков и исполнителей</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-primary mb-4">Для заказчиков</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="/pages/search-service.html" class="text-gray-600 hover:text-primary">Поиск услуг</a></li>
+                        <li><a href="/pages/edit-order.html" class="text-gray-600 hover:text-primary">Создать заказ</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold text-primary mb-4">Для исполнителей</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="/pages/search-orders.html" class="text-gray-600 hover:text-primary">Поиск заказов</a></li>
+                        <li><a href="/pages/edit-service.html" class="text-gray-600 hover:text-primary">Создать услугу</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold text-primary mb-4">Помощь</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="text-gray-600 hover:text-primary">FAQ</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-primary">Поддержка</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="text-center mt-8 pt-8 border-t text-gray-600 text-sm">
+                © 2025 SwiftHire. Учебный проект.
+            </div>
+        </div>
+    </footer>
+
+    <script src="/js/main.js"></script>
+    <script src="/js/auth.js"></script>
+    <script src="/js/mobile-menu.js"></script>
+</body>
+</html>
+

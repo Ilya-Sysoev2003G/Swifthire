@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Личный кабинет - SwiftHire</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/tailwind.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#574082',
+                        bgGray: '#d9d9d9'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-bgGray min-h-screen">
+    <!-- Header -->
+    <header class="bg-white shadow-md">
+        <nav class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center text-white font-bold text-xl">
+                        SH
+                    </div>
+                    <span class="text-2xl font-bold text-primary">SwiftHire</span>
+                </div>
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex space-x-6 nav-desktop">
+                    <a href="/pages/index.html" class="nav-link">Главная</a>
+                    <a href="/pages/search-service.html" class="nav-link">Поиск услуг</a>
+                    <a href="/pages/search-orders.html" class="nav-link">Поиск заказов</a>
+                    <a href="/pages/dashboard.html" id="dashboardLink" class="nav-link active">Кабинет</a>
+                    <a href="/pages/profile.html" id="profileLink" class="nav-link">Профиль</a>
+                    <a href="/pages/chat.html" id="chatLink" class="nav-link">Чат</a>
+                    <a href="/pages/freelance-course.html" class="nav-link">Обучение</a>
+                </div>
+                
+                <!-- Desktop Buttons -->
+                <div class="hidden md:flex space-x-4">
+                    <button id="logoutBtn" class="btn-primary">Выйти</button>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <button id="mobileMenuBtn" class="md:hidden p-2">
+                    <div class="hamburger">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 md:hidden">
+        <div class="fixed right-0 top-0 bottom-0 w-64 bg-white shadow-xl mobile-menu-enter">
+            <div class="p-4">
+                <button id="closeMobileMenu" class="float-right text-gray-600 text-3xl">&times;</button>
+                <div class="clear-both pt-8 space-y-4">
+                    <a href="/pages/index.html" class="block py-3 px-4 text-gray-700 hover:bg-gray-100 rounded">
+                        Главная
+                    </a>
+                    <a href="/pages/search-service.html" class="block py-3 px-4 text-gray-700 hover:bg-gray-100 rounded">
+                        Поиск услуг
+                    </a>
+                    <a href="/pages/search-orders.html" class="block py-3 px-4 text-gray-700 hover:bg-gray-100 rounded">
+                        Поиск заказов
+                    </a>
+                    <a href="/pages/dashboard.html" id="dashboardLinkMobile" class="block py-3 px-4 text-primary font-medium hover:bg-gray-100 rounded">
+                        Кабинет
+                    </a>
+                    <a href="/pages/profile.html" id="profileLinkMobile" class="block py-3 px-4 text-gray-700 hover:bg-gray-100 rounded">
+                        Профиль
+                    </a>
+                    <a href="/pages/chat.html" id="chatLinkMobile" class="block py-3 px-4 text-gray-700 hover:bg-gray-100 rounded">
+                        Чат
+                    </a>
+                    <div class="border-t pt-4 mt-4 space-y-2">
+                        <button id="logoutBtnMobile" class="btn-primary w-full">Выйти</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <div class="mb-8">
+            <h1 class="text-4xl font-bold text-primary mb-2">Личный кабинет</h1>
+            <p class="text-gray-600">Добро пожаловать, <span id="userName">Пользователь</span>!</p>
+        </div>
+
+        <!-- Статистика -->
+        <div class="grid md:grid-cols-4 gap-6 mb-8">
+            <div class="card text-center">
+                <div class="text-3xl font-bold text-primary mb-2" id="totalOrders">0</div>
+                <div class="text-gray-600">Всего заказов</div>
+            </div>
+            <div class="card text-center">
+                <div class="text-3xl font-bold text-primary mb-2" id="activeOrders">0</div>
+                <div class="text-gray-600">Активных</div>
+            </div>
+            <div class="card text-center">
+                <div class="text-3xl font-bold text-primary mb-2" id="completedOrders">0</div>
+                <div class="text-gray-600">Завершено</div>
+            </div>
+            <div class="card text-center">
+                <div class="text-3xl font-bold text-primary mb-2" id="userRating">—</div>
+                <div class="text-gray-600">Рейтинг</div>
+                <div class="text-xs text-gray-500 mt-1" id="userRatingCount">(нет отзывов)</div>
+            </div>
+        </div>
+
+        <!-- Быстрые действия -->
+        <div class="grid md:grid-cols-2 gap-6 mb-8">
+            <div class="card">
+                <h3 class="text-xl font-bold text-primary mb-4">Быстрые действия</h3>
+                <div class="space-y-3" id="quickActions">
+                    <a href="/pages/edit-order.html" class="block btn-primary text-center" id="createOrderBtn" style="display: none;">Создать заказ</a>
+                    <a href="/pages/edit-service.html" class="block btn-primary text-center" id="createServiceBtn" style="display: none;">
+                        Создать услугу
+                    </a>
+                </div>
+            </div>
+            <div class="card">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-bold text-primary">Профиль</h3>
+                    <button id="editProfileBtn" class="btn-primary text-sm">Редактировать профиль</button>
+                </div>
+                <div class="space-y-2">
+                    <p><span class="font-medium">Email:</span> <span id="userEmail">user@example.com</span></p>
+                    <p><span class="font-medium">Тип:</span> <span id="userType">Не указан</span></p>
+                    <p><span class="font-medium">Дата регистрации:</span> <span id="regDate">01.01.2025</span></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Мои услуги -->
+        <div class="card mb-8">
+            <h3 class="text-xl font-bold text-primary mb-4" id="activityTitle">Мои услуги</h3>
+            <div id="recentActivity" class="space-y-3">
+                <p class="text-gray-500 text-center py-8">Загрузка...</p>
+            </div>
+        </div>
+
+        <!-- Активные заказы (только для исполнителей) -->
+        <div id="activeOrdersSection" class="card hidden">
+            <h3 class="text-xl font-bold text-primary mb-4">Активные заказы</h3>
+            <div id="activeOrdersList" class="space-y-3">
+                <p class="text-gray-500 text-center py-8">Загрузка...</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Модальное окно редактирования профиля -->
+    <div id="editProfileModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+        <div class="bg-white rounded-lg p-8 max-w-md w-full mx-4">
+            <h2 class="text-2xl font-bold text-primary mb-4">Редактировать профиль</h2>
+            <form id="editProfileForm" class="space-y-4">
+                <div>
+                    <label class="block text-gray-700 mb-2">Имя *</label>
+                    <input type="text" id="editName" required
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                </div>
+
+                <div>
+                    <label class="block text-gray-700 mb-2">Email *</label>
+                    <input type="email" id="editEmail" required
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                </div>
+
+                <div>
+                    <label class="block text-gray-700 mb-2">Новый пароль</label>
+                    <input type="password" id="editPassword" minlength="6"
+                        placeholder="Оставьте пустым, чтобы не менять"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                    <p class="text-sm text-gray-500 mt-1">Минимум 6 символов</p>
+                </div>
+
+                <div>
+                    <label class="block text-gray-700 mb-2">Подтвердите пароль</label>
+                    <input type="password" id="editPasswordConfirm" minlength="6"
+                        placeholder="Повторите новый пароль"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                </div>
+
+                <div class="flex space-x-3 pt-4">
+                    <button type="submit" class="btn-primary flex-1">Сохранить</button>
+                    <button type="button" id="cancelEditProfileBtn" class="border-2 border-gray-300 px-4 py-2 rounded-lg hover:bg-gray-100 transition flex-1">
+                        Отмена
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white mt-16 py-8 border-t">
+        <div class="container mx-auto px-4 text-center text-gray-600 text-sm">
+            © 2025 SwiftHire. Учебный проект.
+        </div>
+    </footer>
+
+    <script src="/js/main.js"></script>
+    <script src="/js/auth.js"></script>
+    <script src="/js/dashboard.js"></script>
+    <script src="/js/mobile-menu.js"></script>
+</body>
+</html>
+

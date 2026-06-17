@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Заказ - SwiftHire</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/tailwind.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#574082',
+                        bgGray: '#d9d9d9'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-bgGray min-h-screen">
+    <!-- Header -->
+    <header class="bg-white shadow-md">
+        <nav class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center text-white font-bold text-xl">
+                        SH
+                    </div>
+                    <span class="text-2xl font-bold text-primary">SwiftHire</span>
+                </div>
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex space-x-6 nav-desktop">
+                    <a href="/pages/index.html" class="nav-link">Главная</a>
+                    <a href="/pages/search-service.html" class="nav-link">Поиск услуг</a>
+                    <a href="/pages/search-orders.html" class="nav-link">Поиск заказов</a>
+                    <a href="/pages/dashboard.html" id="dashboardLink" class="nav-link">Кабинет</a>
+                    <a href="/pages/profile.html" id="profileLink" class="nav-link">Профиль</a>
+                    <a href="/pages/chat.html" id="chatLink" class="nav-link">Чат</a>
+                </div>
+                
+                <!-- Desktop Buttons -->
+                <div class="hidden md:flex space-x-4">
+                    <button id="loginBtn" class="btn-primary">Войти</button>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <button id="mobileMenuBtn" class="md:hidden p-2">
+                    <div class="hamburger">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 md:hidden">
+        <div class="fixed right-0 top-0 bottom-0 w-64 bg-white shadow-xl mobile-menu-enter">
+            <div class="p-4">
+                <button id="closeMobileMenu" class="float-right text-gray-600 text-3xl">&times;</button>
+                <div class="clear-both pt-8 space-y-4">
+                    <a href="/pages/index.html" class="block py-3 px-4 text-gray-700 hover:bg-gray-100 rounded">
+                        Главная
+                    </a>
+                    <a href="/pages/search-service.html" class="block py-3 px-4 text-gray-700 hover:bg-gray-100 rounded">
+                        Поиск услуг
+                    </a>
+                    <a href="/pages/search-orders.html" class="block py-3 px-4 text-gray-700 hover:bg-gray-100 rounded">
+                        Поиск заказов
+                    </a>
+                    <a href="/pages/dashboard.html" id="dashboardLinkMobile" class="block py-3 px-4 text-gray-700 hover:bg-gray-100 rounded">
+                        Кабинет
+                    </a>
+                    <a href="/pages/profile.html" id="profileLinkMobile" class="block py-3 px-4 text-gray-700 hover:bg-gray-100 rounded">
+                        Профиль
+                    </a>
+                    <a href="/pages/chat.html" id="chatLinkMobile" class="block py-3 px-4 text-gray-700 hover:bg-gray-100 rounded">
+                        Чат
+                    </a>
+                    <div class="border-t pt-4 mt-4 space-y-2">
+                        <button id="loginBtnMobile" class="btn-primary w-full">Войти</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- Загрузка -->
+        <div id="loading" class="text-center py-16">
+            <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+            <p class="mt-4 text-gray-600">Загрузка...</p>
+        </div>
+
+        <!-- Информация о заказе -->
+        <div id="orderInfo" class="hidden">
+            <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+                <div class="flex justify-between items-start mb-6">
+                    <div>
+                        <h1 id="orderTitle" class="text-3xl font-bold text-primary mb-2"></h1>
+                        <div class="flex items-center space-x-4 text-sm text-gray-600">
+                            <span id="orderCategory" class="px-3 py-1 bg-gray-100 rounded-full"></span>
+                            <span id="orderDate"></span>
+                            <span id="orderStatus" class="px-3 py-1 rounded-full text-white"></span>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <div id="orderBudget" class="text-2xl font-bold text-primary"></div>
+                        <div class="text-sm text-gray-600">Бюджет</div>
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <h3 class="text-lg font-semibold mb-2">Описание</h3>
+                    <p id="orderDescription" class="text-gray-700"></p>
+                </div>
+
+                <div class="mb-6">
+                    <h3 class="text-lg font-semibold mb-2">Заказчик</h3>
+                    <p id="customerName" class="text-gray-700"></p>
+                </div>
+
+                <!-- Кнопки управления для владельца -->
+                <div id="ownerControls" class="hidden flex space-x-4 mb-6">
+                    <button id="editOrderBtn" class="btn-secondary">Редактировать</button>
+                </div>
+                
+                <!-- Кнопка закрытия задачи (только для открытых заказов) -->
+                <div id="closeOrderControls" class="hidden mb-6">
+                    <button id="closeOrderBtn" class="btn-secondary">Закрыть задачу</button>
+                </div>
+
+                <!-- Кнопки управления статусом заказа -->
+                <!-- Для исполнителя: "Сдать работу" (in_progress -> pending) -->
+                <div id="performerControls" class="hidden mb-6">
+                    <button id="submitWorkBtn" class="btn-primary">Сдать работу</button>
+                </div>
+
+                <!-- Для заказчика: "Принять"/"Вернуть" (pending -> completed/in_progress) -->
+                <div id="customerPendingControls" class="hidden flex space-x-4 mb-6">
+                    <button id="acceptWorkBtn" class="btn-primary">Принять работу</button>
+                    <button id="returnWorkBtn" class="btn-secondary">Вернуть исполнителю</button>
+                </div>
+
+                <!-- Кнопка для оставления отзыва (completed) -->
+                <div id="reviewControls" class="hidden mb-6">
+                    <button id="leaveReviewBtn" class="btn-primary">Оставить отзыв</button>
+                </div>
+
+                <!-- Кнопка отклика для исполнителей -->
+                <div id="responseControls" class="hidden">
+                    <button id="respondBtn" class="btn-primary">Откликнуться</button>
+                </div>
+            </div>
+
+            <!-- Отклики -->
+            <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                <h2 class="text-2xl font-bold text-primary mb-6">Отклики</h2>
+                <div id="responsesList" class="space-y-4">
+                    <!-- Отклики будут добавлены через JavaScript -->
+                </div>
+                <div id="noResponses" class="hidden text-center py-8">
+                    <div class="text-4xl mb-4">💬</div>
+                    <p class="text-gray-500">Пока нет откликов</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ошибка -->
+        <div id="errorMessage" class="hidden text-center py-16">
+            <div class="text-6xl mb-4">❌</div>
+            <h3 class="text-2xl font-bold text-red-600 mb-2">Ошибка</h3>
+            <p id="errorText" class="text-gray-500"></p>
+        </div>
+    </main>
+
+    <!-- Модальное окно для отклика -->
+    <div id="responseModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-lg p-6 w-full max-w-md mx-4">
+            <h3 class="text-xl font-bold mb-4">Откликнуться на заказ</h3>
+            <form id="responseForm">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Количество дней</label>
+                    <input type="number" id="responseDays" class="w-full" min="1" required>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Стоимость</label>
+                    <input type="number" id="responsePrice" class="w-full" min="0" step="0.01" required>
+                </div>
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Сообщение</label>
+                    <textarea id="responseMessage" class="w-full" rows="4" placeholder="Расскажите о своем опыте и подходе к выполнению заказа" required></textarea>
+                </div>
+                <div class="flex space-x-4">
+                    <button type="button" id="cancelResponseBtn" class="btn-secondary flex-1">Отмена</button>
+                    <button type="submit" class="btn-primary flex-1">Отправить отклик</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Модальное окно для оставления отзыва -->
+    <div id="reviewModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-lg p-6 w-full max-w-md mx-4">
+            <h3 class="text-xl font-bold mb-4">Оставить отзыв для <span id="revieweeName"></span></h3>
+            <form id="reviewForm">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Рейтинг (1-5)</label>
+                    <div class="flex items-center space-x-4">
+                        <input type="range" id="reviewRating" min="1" max="5" value="5" class="w-full">
+                        <span id="ratingDisplay" class="text-2xl text-yellow-500">★★★★★</span>
+                    </div>
+                </div>
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Комментарий</label>
+                    <textarea id="reviewComment" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" rows="4" placeholder="Поделитесь своим опытом работы..." required></textarea>
+                </div>
+                <div class="flex space-x-4">
+                    <button type="button" id="cancelReviewBtn" class="btn-secondary flex-1">Отмена</button>
+                    <button type="submit" class="btn-primary flex-1">Отправить отзыв</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="/js/main.js"></script>
+    <script src="/js/order.js"></script>
+    <script src="/js/mobile-menu.js"></script>
+</body>
+</html>
